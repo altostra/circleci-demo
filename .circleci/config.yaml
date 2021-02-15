@@ -1,0 +1,124 @@
+version: 2.1
+orbs:
+  altostra-orb: altostra/altostra-orb@1.1.0
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:12.19
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: install dependencies
+          command: |
+            npm ci
+      - save_cache:
+          key: npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: run test
+          command: |
+            npm run test --if-present
+
+  push-image:
+    docker:
+      - image: cimg/node:12.19
+    steps:
+      - checkout
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
+      - run:
+         name: Setup Environment Variables
+         command: |
+          echo "export ALTO_VERSION=v`jq -r .version package.json`" | tee -a $BASH_ENV /tmp/alto_version.env
+
+      - altostra-orb/setup
+
+      - restore_cache:
+          keys:
+            - npm-deps-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: install dependencies
+          command: |
+            npm ci
+
+      - run:
+          name: build
+          command: |
+            npm run build
+
+      - run:
+          name: trim for production
+          command: |
+            npm ci --production
+
+      - altostra-orb/push:
+          image-name: "$ALTO_VERSION"
+
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - alto_version.env
+
+  deploy-image:
+    parameters:
+      env-name:
+        type: string
+        default: "Dev"
+        description: "Env to deploy to"
+      instance-name:
+        type: string
+        default: "dev"
+        description: "Env to deploy to"
+    docker:
+      - image: cimg/node:12.19
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Get ALTO_VERSION Variable from the Push step
+          command: |
+            cat /tmp/alto_version.env | tee -a "$BASH_ENV"
+
+      - checkout # We need this for the .altostra project file, otherwise "deploy" wont know which project to run
+
+      - altostra-orb/setup
+
+      - altostra-orb/deploy-version:
+          env-name: << parameters.env-name >>
+          instance-name: << parameters.instance-name >>
+          image-name: "$ALTO_VERSION"
+
+workflows:
+  test-push:
+    jobs:
+      - test:
+          context:
+            - altostra
+      - push-image:
+          context:
+            - altostra
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - main
+      - deploy-image:
+          env-name: "Dev"
+          instance-name: "dev"
+          context:
+            - altostra
+          requires:
+            - push-image
