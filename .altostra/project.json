@@ -1,0 +1,202 @@
+{
+	"id": "ckl6ltz0d0000bnt2b37y7mgd",
+	"name": "circleci-demo",
+	"description": "An empty project template",
+	"created": "2021-02-15T13:19:38.367Z",
+	"blueprints": [
+		{
+			"version": "2019-10-24",
+			"connections": {
+				"ApiEndpoint01": {
+					"MessagesDispatcher01": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint01",
+						"to": "MessagesDispatcher01"
+					}
+				},
+				"MessagesDispatcher01": {
+					"MessagingBus01": {
+						"type": "connection.resource-access",
+						"accessLevel": "write-only",
+						"from": "MessagesDispatcher01",
+						"to": "MessagingBus01"
+					}
+				},
+				"InventoryUpdater01": {
+					"VaccinesUsageTable01": {
+						"type": "connection.resource-access",
+						"accessLevel": "read-write",
+						"from": "InventoryUpdater01",
+						"to": "VaccinesUsageTable01"
+					}
+				},
+				"MessagingBus01": {
+					"InventoryUpdater01": {
+						"type": "connection.topic-subscription",
+						"from": "MessagingBus01",
+						"to": "InventoryUpdater01"
+					},
+					"MohNotifier01": {
+						"type": "connection.topic-subscription",
+						"from": "MessagingBus01",
+						"to": "MohNotifier01"
+					},
+					"PatientRecordUpdater01": {
+						"type": "connection.topic-subscription",
+						"from": "MessagingBus01",
+						"to": "PatientRecordUpdater01"
+					}
+				},
+				"MohNotifier01": {
+					"FollowupMailSender01": {
+						"type": "connection.resource-access",
+						"accessLevel": "write-only",
+						"from": "MohNotifier01",
+						"to": "FollowupMailSender01"
+					}
+				}
+			},
+			"resources": {
+				"VaccinationGw01": {
+					"type": "resource.api",
+					"name": "vaccination-gw",
+					"cors": {
+						"type": "api.cors.none"
+					},
+					"endpoints": [
+						{
+							"type": "ref",
+							"id": "ApiEndpoint01"
+						}
+					],
+					"id": "VaccinationGw01"
+				},
+				"MessagesDispatcher01": {
+					"type": "resource.compute.function",
+					"name": "messages-dispatcher",
+					"entryPoint": "functions/messagesDispatcher.handler",
+					"memory": 512,
+					"runtime": "nodejs12.x",
+					"timeout": 6,
+					"id": "MessagesDispatcher01"
+				},
+				"ApiEndpoint01": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-0",
+					"method": "POST",
+					"path": "/userVaccinated",
+					"api": {
+						"type": "ref",
+						"id": "VaccinationGw01"
+					},
+					"id": "ApiEndpoint01"
+				},
+				"MessagingBus01": {
+					"type": "resource.notification-topic",
+					"name": "messaging-bus",
+					"displayName": "messaging-bus",
+					"topicName": "messaging-bus",
+					"id": "MessagingBus01"
+				},
+				"MohNotifier01": {
+					"type": "resource.compute.function",
+					"name": "moh-notifier",
+					"entryPoint": "functions/mohNotifier.handler",
+					"memory": 512,
+					"runtime": "nodejs12.x",
+					"timeout": 6,
+					"id": "MohNotifier01"
+				},
+				"InventoryUpdater01": {
+					"type": "resource.compute.function",
+					"name": "inventory-updater",
+					"entryPoint": "functions/inventoryUpdater.handler",
+					"memory": 512,
+					"runtime": "nodejs12.x",
+					"timeout": 6,
+					"id": "InventoryUpdater01"
+				},
+				"PatientRecordUpdater01": {
+					"type": "resource.compute.function",
+					"name": "patient-record-updater",
+					"entryPoint": "functions/patientRecordUpdater.handler",
+					"memory": 512,
+					"runtime": "nodejs12.x",
+					"timeout": 6,
+					"id": "PatientRecordUpdater01"
+				},
+				"VaccinesUsageTable01": {
+					"type": "resource.table",
+					"name": "vaccines-usage-table",
+					"tableName": "vaccines-usage-table",
+					"key": {
+						"hash": {
+							"name": "userId",
+							"type": "STRING"
+						}
+					},
+					"aws": {
+						"billingModel": "PAY_PER_REQUEST"
+					},
+					"id": "VaccinesUsageTable01"
+				},
+				"FollowupMailSender01": {
+					"type": "resource.notification-topic",
+					"name": "followup-mail-sender",
+					"displayName": "followup-mail-sender",
+					"topicName": "followup-mail-sender",
+					"id": "FollowupMailSender01"
+				}
+			},
+			"metadata": {
+				"designer": {
+					"resourcePositions": {
+						"VaccinationGw01": {
+							"x": 153,
+							"y": 330,
+							"z": 0
+						},
+						"MessagesDispatcher01": {
+							"x": 242,
+							"y": 434,
+							"z": 0
+						},
+						"MessagingBus01": {
+							"x": 540,
+							"y": 434,
+							"z": 0
+						},
+						"MohNotifier01": {
+							"x": 871,
+							"y": 295,
+							"z": 0
+						},
+						"InventoryUpdater01": {
+							"x": 868,
+							"y": 211,
+							"z": 0
+						},
+						"PatientRecordUpdater01": {
+							"x": 869,
+							"y": 375,
+							"z": 0
+						},
+						"VaccinesUsageTable01": {
+							"x": 1107,
+							"y": 211,
+							"z": 0
+						},
+						"FollowupMailSender01": {
+							"x": 1087,
+							"y": 295,
+							"z": 0
+						}
+					}
+				}
+			},
+			"id": "ckl6ltz0d0000bnt2b37y7mgd",
+			"name": "circleci-demo",
+			"unsafe": false
+		}
+	]
+}
