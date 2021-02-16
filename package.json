@@ -1,0 +1,22 @@
+{
+  "name": "circleci-demo",
+  "version": "1.0.0",
+  "description": "Integrating CircleCI with Altostra projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altostra/circleci-demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/altostra/circleci-demo/issues"
+  },
+  "homepage": "https://github.com/altostra/circleci-demo#readme",
+  "devDependencies": {
+    "mocha": "^8.3.0"
+  }
+}
