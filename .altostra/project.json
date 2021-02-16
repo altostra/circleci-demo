@@ -60,7 +60,7 @@
 						"type": "connection.domain",
 						"from": "DemoDomain01",
 						"to": "VaccinationGw01",
-						"hostname": "VACCINES_HOST_NAME",
+						"hostname": "hostname",
 						"certificate": {
 							"type": "cert.stored",
 							"uri": "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
@@ -166,7 +166,7 @@
 				"DemoDomain01": {
 					"type": "resource.domain",
 					"name": "demo-domain",
-					"domainName": "demo.altostra.com",
+					"domainName": "example.com",
 					"dnsRegistration": false,
 					"id": "DemoDomain01"
 				}
@@ -234,6 +234,11 @@
 				"DEMO_DOMAIN_NAME": {
 					"paths": [
 						"resources/DemoDomain01/domainName"
+					]
+				},
+				"VACCINES_HOST_NAME": {
+					"paths": [
+						"connections/DemoDomain01/VaccinationGw01/hostname"
 					]
 				}
 			}
