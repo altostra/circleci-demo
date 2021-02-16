@@ -167,8 +167,9 @@
 					"type": "resource.domain",
 					"name": "demo-domain",
 					"domainName": "example.com",
-					"dnsRegistration": false,
-					"id": "DemoDomain01"
+					"dnsRegistration": true,
+					"id": "DemoDomain01",
+					"zoneId": "Z021654138SAVR1ILIKZ5"
 				}
 			},
 			"metadata": {
