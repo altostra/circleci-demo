@@ -60,7 +60,7 @@
 						"type": "connection.domain",
 						"from": "DemoDomain01",
 						"to": "VaccinationGw01",
-						"hostname": "hostname",
+						"hostname": "VACCINES_HOST_NAME",
 						"certificate": {
 							"type": "cert.stored",
 							"uri": "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
@@ -226,14 +226,14 @@
 			"name": "circleci-demo",
 			"unsafe": false,
 			"parameters": {
-				"VACCINES_HOST_NAME": {
-					"paths": [
-						"connections/DemoDomain01/VaccinationGw01/hostname"
-					]
-				},
 				"VACCINES_DOMAIN_CERT": {
 					"paths": [
 						"connections/DemoDomain01/VaccinationGw01/certificate/uri"
+					]
+				},
+				"DEMO_DOMAIN_NAME": {
+					"paths": [
+						"resources/DemoDomain01/domainName"
 					]
 				}
 			}
