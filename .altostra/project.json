@@ -54,6 +54,18 @@
 						"from": "MohNotifier01",
 						"to": "FollowupMailSender01"
 					}
+				},
+				"DemoDomain01": {
+					"VaccinationGw01": {
+						"type": "connection.domain",
+						"from": "DemoDomain01",
+						"to": "VaccinationGw01",
+						"hostname": "hostname",
+						"certificate": {
+							"type": "cert.stored",
+							"uri": "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
+						}
+					}
 				}
 			},
 			"resources": {
@@ -150,14 +162,21 @@
 					"displayName": "followup-mail-sender",
 					"topicName": "followup-mail-sender",
 					"id": "FollowupMailSender01"
+				},
+				"DemoDomain01": {
+					"type": "resource.domain",
+					"name": "demo-domain",
+					"domainName": "demo.altostra.com",
+					"dnsRegistration": false,
+					"id": "DemoDomain01"
 				}
 			},
 			"metadata": {
 				"designer": {
 					"resourcePositions": {
 						"VaccinationGw01": {
-							"x": 145,
-							"y": 163,
+							"x": 140,
+							"y": 148,
 							"z": 0
 						},
 						"MessagesDispatcher01": {
@@ -194,13 +213,31 @@
 							"x": 1087,
 							"y": 295,
 							"z": 0
+						},
+						"DemoDomain01": {
+							"x": 70,
+							"y": 20,
+							"z": 0
 						}
 					}
 				}
 			},
 			"id": "ckl6ltz0d0000bnt2b37y7mgd",
 			"name": "circleci-demo",
-			"unsafe": false
+			"unsafe": false,
+			"parameters": {
+				"VACCINES_HOST_NAME": {
+					"paths": [
+						"connections/DemoDomain01/VaccinationGw01/hostname"
+					]
+				},
+				"VACCINES_DOMAIN_CERT": {
+					"paths": [
+						"connections/DemoDomain01/VaccinationGw01/certificate/uri"
+					]
+				}
+			}
 		}
-	]
+	],
+	"type": "altostra"
 }
