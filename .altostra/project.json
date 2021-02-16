@@ -131,7 +131,11 @@
 					"tableName": "vaccines-usage-table",
 					"key": {
 						"hash": {
-							"name": "userId",
+							"type": "STRING",
+							"name": "userId"
+						},
+						"range": {
+							"name": "dose",
 							"type": "STRING"
 						}
 					},
@@ -152,18 +156,18 @@
 				"designer": {
 					"resourcePositions": {
 						"VaccinationGw01": {
-							"x": 153,
-							"y": 330,
+							"x": 145,
+							"y": 163,
 							"z": 0
 						},
 						"MessagesDispatcher01": {
-							"x": 242,
-							"y": 434,
+							"x": 219,
+							"y": 283,
 							"z": 0
 						},
 						"MessagingBus01": {
-							"x": 540,
-							"y": 434,
+							"x": 505,
+							"y": 284,
 							"z": 0
 						},
 						"MohNotifier01": {
