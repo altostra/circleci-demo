@@ -20,7 +20,7 @@ module.exports.handler = async (event) => {
   console.log(`Saving vaccination dosage: ${util.inspect(item)}`)
 
   var params = {
-    TableName: tableName,
+    TableName: TABLE_ARN,
     Item: item
   };
 
