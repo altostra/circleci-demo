@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   console.log(`Notifing the MOH on another successful vaccination`)
 
-  const message = {
+  const email = {
     TopicArn: MOH_TOPIC,
     Message: JSON.stringify({
       userId: message.userId,
@@ -20,7 +20,7 @@ exports.handler = async (event) => {
   };
 
   // Create promise and SNS service object
-  await sns.publish(message).promise();
+  await sns.publish(email).promise();
 
   return {
     statusCode: 200,
