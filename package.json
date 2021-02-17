@@ -1,10 +1,11 @@
 {
   "name": "circleci-demo",
-  "version": "1.1.0",
+  "version": "1.0.8",
   "description": "Integrating CircleCI with Altostra projects",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": ""
   },
   "repository": {
     "type": "git",
