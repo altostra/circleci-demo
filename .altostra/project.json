@@ -158,9 +158,8 @@
 				},
 				"FollowupMailSender01": {
 					"type": "resource.notification-topic",
-					"name": "followup-mail-sender",
+					"name": "moh-mail-sender",
 					"displayName": "followup-mail-sender",
-					"topicName": "followup-mail-sender",
 					"id": "FollowupMailSender01"
 				},
 				"DemoDomain01": {
@@ -176,8 +175,8 @@
 				"designer": {
 					"resourcePositions": {
 						"VaccinationGw01": {
-							"x": 140,
-							"y": 148,
+							"x": 130,
+							"y": 141,
 							"z": 0
 						},
 						"MessagesDispatcher01": {
@@ -186,8 +185,8 @@
 							"z": 0
 						},
 						"MessagingBus01": {
-							"x": 505,
-							"y": 284,
+							"x": 503,
+							"y": 283,
 							"z": 0
 						},
 						"MohNotifier01": {
