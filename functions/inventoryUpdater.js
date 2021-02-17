@@ -11,10 +11,11 @@ module.exports.handler = async (event) => {
 
   const item = {
     'userId': message.userId,
-    'vaccineType': message.type,
-    'vaccineBatch': message.batchId,
-    'vaccinationDate': message.date,
-    'vaccineDose': message.dose
+    'dose': message.dose,
+    'type': message.type,
+    'batch': message.batchId,
+    'date': message.date,
+    'dosage': message.dosage
   }
 
   console.log(`Saving vaccination dosage: ${util.inspect(item)}`)

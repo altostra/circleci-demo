@@ -12,7 +12,6 @@ function validateRequest() {
 }
 
 
-
 exports.handler = async (event) => {
 
   console.log(`Processing a vaccination request`)
