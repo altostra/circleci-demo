@@ -105,10 +105,10 @@ workflows:
     jobs:
       - test:
           context:
-            - altostra
+            - altostra-demo
       - push-image:
           context:
-            - altostra
+            - altostra-demo
           requires:
             - test
           filters:
@@ -119,6 +119,6 @@ workflows:
           env-name: "Dev"
           instance-name: "dev"
           context:
-            - altostra
+            - altostra-demo
           requires:
             - push-image
