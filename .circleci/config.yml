@@ -24,7 +24,7 @@ jobs:
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
-          image-name: "<< pipeline.git.branch >>-<< pipeline.project.git_url >>"
+          image-name: "<< pipeline.git.branch >>-<< pipeline.project.branch >>"
 
 workflows:
   test-push:
