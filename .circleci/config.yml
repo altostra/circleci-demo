@@ -17,14 +17,20 @@ jobs:
 
     docker:
       - image: cimg/node:12.19
+    environment:
+      VERSION_NANE: "<< pipeline.git.branch >>-<< pipeline.git.branch >>"
     steps:
       - checkout
       - node/install-packages
+      - echo "Pushing version: $VERSION_NANE"
       - altostra-orb/setup
+      - altostra-orb/push:
+          image-name: $VERSION_NANE
+
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
-          image-name: "<< pipeline.git.branch >>-<< pipeline.git.branch >>"
+          image-name: VERSION_NANE
 
 workflows:
   test-push:
