@@ -107,7 +107,6 @@
 					"type": "resource.notification-topic",
 					"name": "messaging-bus",
 					"displayName": "messaging-bus",
-					"topicName": "messaging-bus",
 					"id": "MessagingBus01"
 				},
 				"MohNotifier01": {
