@@ -18,7 +18,7 @@ jobs:
     docker:
       - image: cimg/node:12.19
     environment:
-      VERSION_NANE: "<< pipeline.git.branch >>-<< pipeline.git.branch >>"
+      VERSION_NANE: "<< pipeline.git.branch >>-<< pipeline.git.revision >>"
     steps:
       - checkout
       - node/install-packages
