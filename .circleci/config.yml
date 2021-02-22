@@ -30,7 +30,7 @@ jobs:
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
-          image-name: VERSION_NANE
+          image-name: "$VERSION_NANE"
 
 workflows:
   test-push:
@@ -44,8 +44,3 @@ workflows:
             - altostra-demo
           requires:
             - node/test
-          filters:
-            branches:
-              only:
-                - master
-                - main
