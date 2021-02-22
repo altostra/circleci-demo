@@ -23,8 +23,6 @@ jobs:
       - checkout
       - node/install-packages
       - altostra-orb/setup
-      - altostra-orb/push:
-          image-name: << parameters.alto-version >>
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
