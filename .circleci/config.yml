@@ -22,11 +22,11 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - echo "Pushing version: $VERSION_NANE"
+      - run: |
+          echo "Pushing version: $VERSION_NANE"
       - altostra-orb/setup
       - altostra-orb/push:
           image-name: $VERSION_NANE
-
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
