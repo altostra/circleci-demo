@@ -6,8 +6,6 @@ orbs:
 jobs:
   push-and-deploy-image:
     parameters:
-      alto-version:
-        type: integer
       env-name:
         type: string
         default: "Dev"
@@ -36,7 +34,6 @@ workflows:
             - altostra-demo #this should include the NPM_TOKEN should you need it to auth with custom images
           version: "12.19"
       - push-and-deploy-image:
-          alto-version: 1.1.1
           context:
             - altostra-demo
           requires:
