@@ -44,3 +44,8 @@ workflows:
             - altostra-demo
           requires:
             - node/test
+          filters:
+            branches:
+              only:
+                - master
+                - main
