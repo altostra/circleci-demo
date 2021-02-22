@@ -37,10 +37,15 @@ workflows:
     jobs:
       - node/test:
           context:
-            - altostra-demo #this should include the NPM_TOKEN should you need it to auth with custom images
+            - altostra-demo
           version: "12.19"
       - push-and-deploy-image:
           context:
             - altostra-demo
           requires:
             - node/test
+          filters:
+            branches:
+              only:
+                - master
+                - main
