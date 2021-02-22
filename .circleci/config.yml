@@ -1,55 +1,13 @@
 version: 2.1
 orbs:
   altostra-orb: altostra/altostra-orb@1.1.0
+  node: circleci/node@4.1.1
 
 jobs:
-
-  push-image:
-    docker:
-      - image: cimg/node:12.19
-    steps:
-      - checkout
-
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-
-      - run:
-         name: Setup Environment Variables
-         command: |
-          echo "export ALTO_VERSION=v`jq -r .version package.json`" | tee -a $BASH_ENV /tmp/alto_version.env
-
-      - altostra-orb/setup
-
-      - restore_cache:
-          keys:
-            - npm-deps-{{ checksum "package-lock.json" }}
-
-      - run:
-          name: install dependencies
-          command: |
-            npm ci
-
-      - run:
-          name: build
-          command: |
-            npm run build
-
-      - run:
-          name: trim for production
-          command: |
-            npm ci --production
-
-      - altostra-orb/push:
-          image-name: "$ALTO_VERSION"
-
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - alto_version.env
-
-  deploy-image:
+  push-and-deploy-image:
     parameters:
+      alto-version:
+        type: integer
       env-name:
         type: string
         default: "Dev"
@@ -58,42 +16,30 @@ jobs:
         type: string
         default: "dev"
         description: "Env to deploy to"
+
     docker:
       - image: cimg/node:12.19
     steps:
-      - attach_workspace:
-          at: /tmp
-      - run:
-          name: Get ALTO_VERSION Variable from the Push step
-          command: |
-            cat /tmp/alto_version.env | tee -a "$BASH_ENV"
-
-      - checkout # We need this for the .altostra project file, otherwise "deploy" wont know which project to run
-
+      - checkout
+      - node/install-packages
       - altostra-orb/setup
-
+      - altostra-orb/push:
+          image-name: << parameters.alto-version >>
       - altostra-orb/deploy-version:
           env-name: << parameters.env-name >>
           instance-name: << parameters.instance-name >>
-          image-name: "$ALTO_VERSION"
+          image-name: "<< pipeline.git.branch >>-<< pipeline.project.git_url >>"
 
 workflows:
   test-push:
     jobs:
       - node/test:
-          id: test
           context:
-            - altostra-demo
+            - altostra-demo #this should include the NPM_TOKEN should you need it to auth with custom images
           version: "12.19"
-      - deploy-image:
-          env-name: "Dev"
-          instance-name: "dev"
+      - push-and-deploy-image:
+          alto-version: 1.1.1
           context:
             - altostra-demo
           requires:
-            - test
-          filters:
-            branches:
-              only:
-                - main
-
+            - node/test
