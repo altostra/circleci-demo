@@ -3,29 +3,6 @@ orbs:
   altostra-orb: altostra/altostra-orb@1.1.0
 
 jobs:
-  test:
-    docker:
-      - image: cimg/node:12.19
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - npm-deps-{{ checksum "package-lock.json" }}
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - run:
-          name: install dependencies
-          command: |
-            npm ci
-      - save_cache:
-          key: npm-deps-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: run test
-          command: |
-            npm run test --if-present
 
   push-image:
     docker:
@@ -103,10 +80,14 @@ jobs:
 workflows:
   test-push:
     jobs:
-      - test:
+      - node/test:
+          id: test
           context:
             - altostra-demo
-      - push-image:
+          version: "12.19"
+      - deploy-image:
+          env-name: "Dev"
+          instance-name: "dev"
           context:
             - altostra-demo
           requires:
@@ -115,10 +96,4 @@ workflows:
             branches:
               only:
                 - main
-      - deploy-image:
-          env-name: "Dev"
-          instance-name: "dev"
-          context:
-            - altostra-demo
-          requires:
-            - push-image
+
