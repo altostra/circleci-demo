@@ -66,6 +66,13 @@
 							"uri": "arn:aws:acm:us-east-1:123456789012:certificate/00000000-0000-0000-0000-000000000000"
 						}
 					}
+				},
+				"ApiEndpoint02": {
+					"2NdVaccination01": {
+						"type": "connection.trigger",
+						"from": "ApiEndpoint02",
+						"to": "2NdVaccination01"
+					}
 				}
 			},
 			"resources": {
@@ -79,6 +86,10 @@
 						{
 							"type": "ref",
 							"id": "ApiEndpoint01"
+						},
+						{
+							"type": "ref",
+							"id": "ApiEndpoint02"
 						}
 					],
 					"id": "VaccinationGw01"
@@ -168,6 +179,27 @@
 					"dnsRegistration": true,
 					"id": "DemoDomain01",
 					"zoneId": "Z021654138SAVR1ILIKZ5"
+				},
+				"2NdVaccination01": {
+					"type": "resource.compute.function",
+					"name": "2ndVaccination",
+					"entryPoint": "functions/2NdVaccination.handler",
+					"memory": 512,
+					"runtime": "nodejs12.x",
+					"timeout": 6,
+					"id": "2NdVaccination01",
+					"layers": []
+				},
+				"ApiEndpoint02": {
+					"type": "resource.api.endpoint",
+					"name": "api-endpoint-1",
+					"method": "POST",
+					"path": "/scheduleNextDose",
+					"api": {
+						"type": "ref",
+						"id": "VaccinationGw01"
+					},
+					"id": "ApiEndpoint02"
 				}
 			},
 			"metadata": {
@@ -216,6 +248,11 @@
 						"DemoDomain01": {
 							"x": 70,
 							"y": 20,
+							"z": 0
+						},
+						"2NdVaccination01": {
+							"x": 866,
+							"y": 108,
 							"z": 0
 						}
 					}
